@@ -210,6 +210,8 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
         statusBarFrame.origin.y = 0;
     }
 
+    statusBarFrame.size.height = self.webView.frame.origin.y; //frameYStart
+
     _statusBarBackgroundView = [[UIView alloc] initWithFrame:statusBarFrame];
     _statusBarBackgroundView.backgroundColor = _statusBarBackgroundColor;
     _statusBarBackgroundView.autoresizingMask = (UIViewAutoresizingFlexibleWidth  | UIViewAutoresizingFlexibleBottomMargin);
@@ -440,11 +442,11 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
     CGRect frame = self.webView.frame;
     CGFloat height = statusBarFrame.size.height;
+    float safeAreaTop = self.webView.safeAreaInsets.top;
 
     if (!self.statusBarOverlaysWebView) {
-        frame.origin.y = height;
+        frame.origin.y = height >= safeAreaTop ? height : safeAreaTop;
     } else {
-        float safeAreaTop = self.webView.safeAreaInsets.top;
         if (height >= safeAreaTop && safeAreaTop >0) {
             // Sometimes when in-call/recording/hotspot larger status bar is present, the safeAreaTop is 40 but we want frame.origin.y to be 20
             frame.origin.y = safeAreaTop == 40 ? 20 : height - safeAreaTop;
