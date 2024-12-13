@@ -105,8 +105,8 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     //add a small delay ( 0.1 seconds ) or statusbar size will be wrong
     __weak CDVStatusBar* weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [weakSelf resizeStatusBarBackgroundView];
         [weakSelf resizeWebView];
+        [weakSelf resizeStatusBarBackgroundView];
     });
 }
 
@@ -423,6 +423,7 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 
 -(void)resizeStatusBarBackgroundView {
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+    statusBarFrame.size.height = self.webView.frame.origin.y; // Set the height to the current webView origin in case it has been changed after resizing
     CGRect sbBgFrame = _statusBarBackgroundView.frame;
     sbBgFrame.size = statusBarFrame.size;
     _statusBarBackgroundView.frame = sbBgFrame;
@@ -445,7 +446,7 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     float safeAreaTop = self.webView.safeAreaInsets.top;
 
     if (!self.statusBarOverlaysWebView) {
-        frame.origin.y = height >= safeAreaTop ? height : safeAreaTop;
+        frame.origin.y = height >= safeAreaTop || height == 0 ? height : safeAreaTop;
     } else {
         if (height >= safeAreaTop && safeAreaTop >0) {
             // Sometimes when in-call/recording/hotspot larger status bar is present, the safeAreaTop is 40 but we want frame.origin.y to be 20
