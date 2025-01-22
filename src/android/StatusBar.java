@@ -51,7 +51,7 @@ public class StatusBar extends CordovaPlugin {
 
     
     private static final String STYLE_DEFAULT = "default";
-    private static final String STYLE_LIGHT_CONTENT = "darkcontent";
+    private static final String STYLE_LIGHT_CONTENT = "lightcontent";
 
     
     private AppCompatActivity activity;
