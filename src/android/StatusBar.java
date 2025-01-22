@@ -48,10 +48,14 @@ public class StatusBar extends CordovaPlugin {
     private static final String ACTION_OVERLAYS_WEB_VIEW = "overlaysWebView";
     private static final String ACTION_STYLE_DEFAULT = "styleDefault";
     private static final String ACTION_STYLE_LIGHT_CONTENT = "styleLightContent";
+    private static final String ACTION_STYLE_DARK_CONTENT = "styleDarkContent";
 
+    
     private static final String STYLE_DEFAULT = "default";
     private static final String STYLE_LIGHT_CONTENT = "lightcontent";
+    private static final String STYLE_DARK_CONTENT = "darkcontent";
 
+    
     private AppCompatActivity activity;
     private Window window;
 
@@ -81,9 +85,9 @@ public class StatusBar extends CordovaPlugin {
             // Read 'StatusBarBackgroundColor' from config.xml, default is #000000.
             setStatusBarBackgroundColor(preferences.getString("StatusBarBackgroundColor", "#000000"));
 
-            // Read 'StatusBarStyle' from config.xml, default is 'lightcontent'.
+            // Read 'StatusBarStyle' from config.xml, default is 'lightcontent'. MOOD: DARK_CONTENT
             setStatusBarStyle(
-                preferences.getString("StatusBarStyle", STYLE_LIGHT_CONTENT).toLowerCase()
+                preferences.getString("StatusBarStyle", STYLE_DARK_CONTENT).toLowerCase()
             );
         });
     }
@@ -161,7 +165,9 @@ public class StatusBar extends CordovaPlugin {
             case ACTION_STYLE_LIGHT_CONTENT:
                 activity.runOnUiThread(() -> setStatusBarStyle(STYLE_LIGHT_CONTENT));
                 return true;
-
+            case ACTION_STYLE_DARK_CONTENT:
+                activity.runOnUiThread(() -> setStatusBarStyle(STYLE_DARK_CONTENT));
+                return true;
             default:
                 return false;
         }
@@ -205,8 +211,10 @@ public class StatusBar extends CordovaPlugin {
                 windowInsetsControllerCompat.setAppearanceLightStatusBars(true);
             } else if (style.equals(STYLE_LIGHT_CONTENT)) {
                 windowInsetsControllerCompat.setAppearanceLightStatusBars(false);
-            } else {
-                LOG.e(TAG, "Invalid style, must be either 'default' or 'lightcontent'");
+            } else if (style.equals(STYLE_DARK_CONTENT)) {
+                windowInsetsControllerCompat.setAppearanceLightStatusBars(false);
+            }else {
+                LOG.e(TAG, "Invalid style, must be either 'default' or 'lightcontent' or 'darkcontent'");
             }
         }
     }
