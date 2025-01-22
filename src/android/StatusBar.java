@@ -163,9 +163,7 @@ public class StatusBar extends CordovaPlugin {
             case ACTION_STYLE_LIGHT_CONTENT:
                 activity.runOnUiThread(() -> setStatusBarStyle(STYLE_LIGHT_CONTENT));
                 return true;
-            case ACTION_STYLE_DARK_CONTENT:
-                activity.runOnUiThread(() -> setStatusBarStyle(STYLE_DARK_CONTENT));
-                return true;
+
             default:
                 return false;
         }
@@ -209,10 +207,8 @@ public class StatusBar extends CordovaPlugin {
                 windowInsetsControllerCompat.setAppearanceLightStatusBars(true);
             } else if (style.equals(STYLE_LIGHT_CONTENT)) {
                 windowInsetsControllerCompat.setAppearanceLightStatusBars(false);
-            } else if (style.equals(STYLE_DARK_CONTENT)) {
-                windowInsetsControllerCompat.setAppearanceDarkStatusBars(false);
             }else {
-                LOG.e(TAG, "Invalid style, must be either 'default' or 'lightcontent' or 'darkcontent'");
+                LOG.e(TAG, "Invalid style, must be either 'default' or 'lightcontent'");
             }
         }
     }
